@@ -1,22 +1,26 @@
 class SessionsController < ApplicationController
-  include SessionsHelper
 
+  def new
+    @user = User.new
+  end
+
+  # "Create" a login, aka "log the user in"
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
-    if user && user.authenticate(params[:session][:password])
+    user = User.find_by_email(params[:email])
+    if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to root_url
+      redirect_to root_url, :notice => "Welcome back, #{user.first_name}"
     else
-      render 'new'
+      flash.now.alert = "Invalid email or password"
+      render "new"
     end
   end
 
+  # "Delete" a login, aka "log the user out"
   def destroy
-    log_out if logged_in?
-    redirect_to root_url
-  end
-
-  def log_out
-    session[:user_id] = nil
+    # Remove the user id from the session
+    @_current_user = session[:user_id] = nil
+    flash[:notice] = "You have successfully logged out."
+    redirect_to posts_path
   end
 end

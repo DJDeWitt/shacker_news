@@ -1,7 +1,7 @@
-class Post < ActiveRecord::Base
+class Comment < ActiveRecord::Base
 
   #associations
-  has_many :comments
+  belongs_to :post
   belongs_to :author, class_name: 'User'
 
   #validations

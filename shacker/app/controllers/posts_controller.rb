@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-  include SessionsHelper
 
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -34,7 +33,7 @@ class PostsController < ApplicationController
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
         format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
+        format.html { render :new, notice: 'Could not create post.' }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -48,7 +47,7 @@ class PostsController < ApplicationController
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
-        format.html { render :edit }
+        format.html { render :edit, notice: 'Could not update post.' }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
